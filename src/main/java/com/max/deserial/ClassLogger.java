@@ -3,7 +3,8 @@ package com.max.deserial;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtMethod;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.lang.instrument.ClassFileTransformer;
@@ -16,7 +17,7 @@ import java.security.ProtectionDomain;
 
 public class ClassLogger implements ClassFileTransformer {
 
-    private static final Logger LOG = Logger.getLogger(MethodHandles.lookup().lookupClass());
+    private static final Logger LOG = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
     private static final String ALLOWED_CLASSES;
 
@@ -58,7 +59,7 @@ public class ClassLogger implements ClassFileTransformer {
             CtClass clazz = clPool.get("java.io.ObjectInputStream");
 
             CtMethod resolveClassMethod = clazz.getDeclaredMethod("resolveClass",
-                    new CtClass[]{clPool.get("java.io.ObjectStreamClass")});
+                                                                  new CtClass[]{clPool.get("java.io.ObjectStreamClass")});
 
 //            ObjectStreamClass desc;
 //            if (ALLOWED_CLASSES.indexOf(desc.getName()) == -1) {
@@ -66,8 +67,9 @@ public class ClassLogger implements ClassFileTransformer {
 //            }
 
             resolveClassMethod.insertBefore("if (\"" + ALLOWED_CLASSES + "\".indexOf(desc.getName()) == -1) {\n" +
-                    "                throw new IllegalStateException(desc.getName() + \" can't be deserialised, not in a whitelist.\");\n" +
-                    "            }");
+                                                    "                throw new IllegalStateException(desc.getName() + \" " +
+                                                    "can't be deserialised, not in a whitelist.\");\n" +
+                                                    "            }");
             byte[] enhancedBytecode = clazz.toBytecode();
             clazz.detach();
 
