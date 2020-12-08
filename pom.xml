@@ -7,7 +7,7 @@
     <version>2.0.0</version>
 
     <properties>
-        <log4j.version>2.13.0</log4j.version>
+        <log4j.version>2.13.2</log4j.version>
     </properties>
 
     <build>
@@ -21,7 +21,7 @@
                 <configuration>
                     <source>1.9</source>
                     <target>1.9</target>
-                    <encoding>UTF-8</encoding>
+		    <encoding>UTF-8</encoding>
                     <showDeprecation>true</showDeprecation>
                     <showWarnings>true</showWarnings>
                     <executable>$(/usr/libexec/java_home -v 1.9)/bin/javac</executable>
@@ -91,7 +91,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>4.13.1</version>
             <scope>test</scope>
         </dependency>
 
